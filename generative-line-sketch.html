@@ -14,7 +14,7 @@
             background-color: #333;
         }
         canvas {
-            border: 2px solid #333;
+            border: 2px solid #fff;
         }
     </style>
 </head>
@@ -22,6 +22,7 @@
     <canvas id="generativeCanvas" width="600" height="600"></canvas>
 
     <script>
+        let audio = new Audio('sound.wav')
 class LineGenerator {
     constructor(canvas) {
         this.canvas = canvas;
@@ -29,7 +30,7 @@ class LineGenerator {
         this.width = canvas.width;
         this.height = canvas.height;
         this.lines = [];
-        this.lineSpacing = Math.random()*70;
+        this.lineSpacing = Math.random()*100;
         this.angles = [
             { dx: 0, dy: 1 },     // Straight down
             { dx: 1, dy: 1 },      // Down-right
@@ -48,11 +49,11 @@ class LineGenerator {
     }
 
     shouldDivide() {
-        return Math.random() < Math.random();
+        return Math.random() < 0.7;
     }
 
     divideLine(line) {
-        const divisionCount = Math.floor(Math.random() * 3) + 1; // 1-3 lines
+        const divisionCount = Math.floor(Math.random() * 2) + 1 || 0; // 1-3 lines
         
         line.children = Array.from({ length: divisionCount }, () => {
             const angle = this.angles[Math.floor(Math.random() * this.angles.length)];
@@ -89,10 +90,11 @@ class LineGenerator {
 
     drawLines() {
         this.ctx.clearRect(0, 0, this.width, this.height);
-        this.ctx.strokeStyle = '#f3f3f3';
-        this.ctx.lineWidth = 1
+        this.ctx.strokeStyle = '#00e2f4';
+        this.ctx.lineWidth = .3
 
         const drawLineRecursively = (line) => {
+
             this.ctx.beginPath();
             this.ctx.moveTo(line.start.x, line.start.y);
             this.ctx.lineTo(line.end.x, line.end.y);
@@ -109,6 +111,7 @@ class LineGenerator {
         this.generateInitialLine();
         this.processLines();
         this.drawLines();
+        audio.play();
     }
 }
 
@@ -117,12 +120,12 @@ const canvas = document.getElementById('generativeCanvas');
 const lineGenerator = new LineGenerator(canvas);
 
 // Initial generation
-setInterval(() => lineGenerator.regenerate(), 100);
 
 // Regenerate on click
 canvas.addEventListener('click', () => {
     lineGenerator.regenerate();
 });
+// canvas.addEventListener('mousemove', () => lineGenerator.regenerate())
     </script>
 </body>
 </html>
