@@ -29,13 +29,14 @@ class LineGenerator {
         this.width = canvas.width;
         this.height = canvas.height;
         this.lines = [];
-        this.lineSpacing = Math.random()*500;
+        this.lineSpacing = Math.random()*70;
         this.angles = [
             { dx: 0, dy: 1 },     // Straight down
             { dx: 1, dy: 1 },      // Down-right
             { dx: -1, dy: 1 }      // Down-left
         ];
-        
+            this._lineSpacingOptions = [100, 250, 500, 750, 1000];
+
     }
 
     generateInitialLine() {
@@ -89,7 +90,7 @@ class LineGenerator {
     drawLines() {
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.ctx.strokeStyle = '#f3f3f3';
-        this.ctx.lineWidth = 1;
+        this.ctx.lineWidth = 1
 
         const drawLineRecursively = (line) => {
             this.ctx.beginPath();
